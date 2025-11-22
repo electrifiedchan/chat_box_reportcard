@@ -1,0 +1,35 @@
+# --- Python System ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# --- VS Code Settings ---
+.vscode/
+
+# --- Database & Storage ---
+data/
+pg_data/
+
+# --- Sensitive/Large Models ---
+# We ignore the trained model so others have to run the training script themselves
+# (Or un-comment this if you want to share the trained brain)
+src/brain/toolbelt/doctor_model.json
+
+# --- Local Test Files (CRITICAL: PROTECT PRIVACY) ---
+# Prevents uploading your marks cards
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# --- Temporary Debug Scripts ---
+# Keep the repo clean of test logic
+debug_eye.py
+test_logic.py
+check_project.py
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db

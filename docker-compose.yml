@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # 1. The Brain (FastAPI Logic)
+  brain:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart_finder_brain
+    ports:
+      - "8000:8000"  # Expose API to host
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/smart_sgpa
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434  # Talk to local Ollama on Windows
+    volumes:
+      - ./src:/app/src  # Hot-reload: Changes in D:\smart-sgpa-calc\src appear instantly
+    depends_on:
+      - db
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Crucial for Docker to see your RTX 3050 host
+
+  # 2. The Memory (PostgreSQL + pgvector)
+  db:
+    image: pgvector/pgvector:pg16  # Official image with vector extension
+    container_name: smart_finder_db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=smart_sgpa
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/pg_data:/var/lib/postgresql/data # Persist data to D drive
+
+volumes:
+  pg_data:
